@@ -3,8 +3,13 @@ target/
 Cargo.lock
 !/Cargo.lock
 
+# Swift
+.build/
+.swiftpm/
+
 # State file
 .rustlings-state.txt
+.swiftlings-state.json
 
 # OS
 .DS_Store
