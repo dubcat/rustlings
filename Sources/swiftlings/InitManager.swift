@@ -130,6 +130,33 @@ struct InitManager {
             hint: |
               The declaration is missing a keyword that is needed
               in Swift to create a new variable binding.
+              In Swift, you use 'let' for constants and 'var' for variables.
+          
+          - name: variables2
+            dir: 01_variables
+            test: false
+            strict_warnings: false
+            hint: |
+              The error message tells you that you cannot assign to a 'let' constant.
+              In Swift, 'let' creates an immutable binding.
+              What keyword do you use when you need to change a value?
+          
+          - name: functions1
+            dir: 02_functions
+            test: false
+            strict_warnings: false
+            hint: |
+              A function is defined with the 'func' keyword.
+              The basic syntax is: func functionName() { ... }
+          
+          - name: optionals1
+            dir: 03_optionals
+            test: false
+            strict_warnings: false
+            hint: |
+              Optional values in Swift can be nil.
+              You need to unwrap them before using them.
+              Try using 'if let' to safely unwrap the optional.
         """
         
         try infoContent.write(toFile: "info.yaml", atomically: true, encoding: .utf8)
@@ -169,8 +196,36 @@ struct InitManager {
         
         print("x has the value \\(x)")
         """
-        
         try variables1.write(toFile: "exercises/01_variables/variables1.swift", atomically: true, encoding: .utf8)
+        
+        // variables2.swift
+        let variables2 = """
+        // Variables are immutable by default in Swift.
+        // TODO: Make this variable mutable by using the correct keyword.
+        let x = 5
+        x = 10
+        
+        print("x has the value \\(x)")
+        """
+        try variables2.write(toFile: "exercises/01_variables/variables2.swift", atomically: true, encoding: .utf8)
+        
+        // functions1.swift
+        let functions1 = """
+        // TODO: Define a function named 'greet' that prints "Hello, Swift!"
+        
+        greet()
+        """
+        try functions1.write(toFile: "exercises/02_functions/functions1.swift", atomically: true, encoding: .utf8)
+        
+        // optionals1.swift
+        let optionals1 = """
+        // Optionals are a key feature of Swift!
+        // TODO: Fix the code so it properly handles the optional value.
+        
+        let name: String? = "Swift"
+        print("Hello, \\(name)!")
+        """
+        try optionals1.write(toFile: "exercises/03_optionals/optionals1.swift", atomically: true, encoding: .utf8)
         
         // Create solution files
         let intro1Solution = intro1  // Same as exercise
@@ -182,6 +237,33 @@ struct InitManager {
         print("x has the value \\(x)")
         """
         try variables1Solution.write(toFile: "solutions/01_variables/variables1.swift", atomically: true, encoding: .utf8)
+        
+        let variables2Solution = """
+        // Variables are immutable by default in Swift.
+        var x = 5
+        x = 10
+        
+        print("x has the value \\(x)")
+        """
+        try variables2Solution.write(toFile: "solutions/01_variables/variables2.swift", atomically: true, encoding: .utf8)
+        
+        let functions1Solution = """
+        func greet() {
+            print("Hello, Swift!")
+        }
+        
+        greet()
+        """
+        try functions1Solution.write(toFile: "solutions/02_functions/functions1.swift", atomically: true, encoding: .utf8)
+        
+        let optionals1Solution = """
+        // Optionals are a key feature of Swift!
+        let name: String? = "Swift"
+        if let name = name {
+            print("Hello, \\(name)!")
+        }
+        """
+        try optionals1Solution.write(toFile: "solutions/03_optionals/optionals1.swift", atomically: true, encoding: .utf8)
     }
     
     private static func createReadmeFiles() throws {

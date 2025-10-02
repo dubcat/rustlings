@@ -19,7 +19,7 @@ struct ExerciseInfo: Codable {
     let hint: String
     
     /// The exercise is already solved. Ignore it when checking that all exercises are unsolved
-    let skipCheckUnsolved: Bool
+    let skipCheckUnsolved: Bool?
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -30,7 +30,7 @@ struct ExerciseInfo: Codable {
         case skipCheckUnsolved = "skip_check_unsolved"
     }
     
-    init(name: String, dir: String? = nil, test: Bool = true, strictWarnings: Bool = false, hint: String = "", skipCheckUnsolved: Bool = false) {
+    init(name: String, dir: String? = nil, test: Bool = true, strictWarnings: Bool = false, hint: String = "", skipCheckUnsolved: Bool? = nil) {
         self.name = name
         self.dir = dir
         self.test = test
