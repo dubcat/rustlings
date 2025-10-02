@@ -158,4 +158,59 @@ class AppState {
         print("Hint for \(exercise.name):")
         print(exercise.hint)
     }
+    
+    /// Check all exercises and mark them as done or pending
+    func checkAllExercises() throws {
+        print("Checking all exercises...\n")
+        
+        let runner = ExerciseRunner()
+        var checkedCount = 0
+        var doneCount = 0
+        var pendingCount = 0
+        var firstPendingExercise: ExerciseInfo?
+        
+        // Check all exercises
+        for exercise in infoFile.exercises {
+            checkedCount += 1
+            let progressIndicator = String(format: "[%3d/%3d]", checkedCount, infoFile.exercises.count)
+            print("\(progressIndicator) Checking \(exercise.name)...", terminator: "")
+            
+            let success = try runner.runExercise(exercise, silent: true)
+            
+            if success {
+                exerciseStates[exercise.name]?.done = true
+                doneCount += 1
+                print(" ✓")
+            } else {
+                exerciseStates[exercise.name]?.done = false
+                pendingCount += 1
+                if firstPendingExercise == nil {
+                    firstPendingExercise = exercise
+                }
+                print(" ✗")
+            }
+            exerciseStates[exercise.name]?.lastAttempt = Date()
+        }
+        
+        try saveState()
+        
+        print("\nCheck complete!")
+        print("Done: \(doneCount)/\(infoFile.exercises.count)")
+        
+        if pendingCount > 0 {
+            if pendingCount == 1 {
+                print("\nOne exercise pending: \(firstPendingExercise?.path() ?? "")")
+            } else {
+                print("\n\(pendingCount)/\(infoFile.exercises.count) exercises pending.")
+                if let first = firstPendingExercise {
+                    print("The first: \(first.path())")
+                }
+            }
+        } else {
+            print("\n🎉 All exercises completed! Great job!")
+            if let finalMessage = infoFile.finalMessage {
+                print("\n\(finalMessage)")
+            }
+        }
+    }
 }

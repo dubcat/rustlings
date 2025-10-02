@@ -49,6 +49,9 @@ struct InitManager {
             "exercises/10_generics",
             "exercises/11_error_handling",
             "exercises/12_closures",
+            "exercises/13_async_await",
+            "exercises/14_actors",
+            "exercises/15_macros",
             "solutions/00_intro",
             "solutions/01_variables",
             "solutions/02_functions",
@@ -62,6 +65,9 @@ struct InitManager {
             "solutions/10_generics",
             "solutions/11_error_handling",
             "solutions/12_closures",
+            "solutions/13_async_await",
+            "solutions/14_actors",
+            "solutions/15_macros",
         ]
         
         for dir in directories {
@@ -157,6 +163,32 @@ struct InitManager {
               Optional values in Swift can be nil.
               You need to unwrap them before using them.
               Try using 'if let' to safely unwrap the optional.
+          
+          - name: async1
+            dir: 13_async_await
+            test: false
+            strict_warnings: false
+            hint: |
+              Swift 6.2 supports async/await for asynchronous programming.
+              Mark the function as 'async' and use 'await' when calling it.
+              Remember to use 'Task { }' to run async code.
+          
+          - name: actors1
+            dir: 14_actors
+            test: false
+            strict_warnings: false
+            hint: |
+              Actors in Swift 6 provide thread-safe data isolation.
+              Define an actor with the 'actor' keyword instead of 'class'.
+              Access to actor properties and methods is automatically synchronized.
+          
+          - name: macros1
+            dir: 15_macros
+            test: false
+            strict_warnings: false
+            hint: |
+              Swift 6 introduces macros for compile-time code generation.
+              This is an advanced feature - for now, just understand the syntax.
         """
         
         try infoContent.write(toFile: "info.yaml", atomically: true, encoding: .utf8)
@@ -227,6 +259,59 @@ struct InitManager {
         """
         try optionals1.write(toFile: "exercises/03_optionals/optionals1.swift", atomically: true, encoding: .utf8)
         
+        // async1.swift - Swift 6.2 async/await
+        let async1 = """
+        // Swift 6.2 supports async/await for asynchronous programming!
+        // TODO: Make this function async and use await when calling it.
+        
+        import Foundation
+        
+        func fetchData() -> String {
+            return "Data fetched"
+        }
+        
+        // TODO: Mark fetchData as async, use await to call it, and wrap in Task
+        print(fetchData())
+        """
+        try async1.write(toFile: "exercises/13_async_await/async1.swift", atomically: true, encoding: .utf8)
+        
+        // actors1.swift - Swift 6 actors
+        let actors1 = """
+        // Actors provide thread-safe data isolation in Swift 6!
+        // TODO: Change this class to an actor to make it thread-safe.
+        
+        import Foundation
+        
+        class Counter {
+            var value = 0
+            
+            func increment() {
+                value += 1
+            }
+        }
+        
+        let counter = Counter()
+        counter.increment()
+        print("Counter: \\(counter.value)")
+        """
+        try actors1.write(toFile: "exercises/14_actors/actors1.swift", atomically: true, encoding: .utf8)
+        
+        // macros1.swift - Swift 6 macros
+        let macros1 = """
+        // Swift 6 introduces powerful macros!
+        // This exercise just demonstrates the concept.
+        
+        // Macros are defined with @
+        // For example: @freestanding(expression) macro stringify<T>(_ value: T) -> String
+        
+        // For now, let's use a simple print
+        let value = 42
+        print("The value is: \\(value)")
+        
+        // TODO: Just run this to see it works - macros are advanced!
+        """
+        try macros1.write(toFile: "exercises/15_macros/macros1.swift", atomically: true, encoding: .utf8)
+        
         // Create solution files
         let intro1Solution = intro1  // Same as exercise
         try intro1Solution.write(toFile: "solutions/00_intro/intro1.swift", atomically: true, encoding: .utf8)
@@ -264,6 +349,64 @@ struct InitManager {
         }
         """
         try optionals1Solution.write(toFile: "solutions/03_optionals/optionals1.swift", atomically: true, encoding: .utf8)
+        
+        // async1 solution
+        let async1Solution = """
+        // Swift 6.2 supports async/await for asynchronous programming!
+        
+        import Foundation
+        
+        func fetchData() async -> String {
+            return "Data fetched"
+        }
+        
+        Task {
+            let result = await fetchData()
+            print(result)
+        }
+        
+        // Keep program running to see output
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        """
+        try async1Solution.write(toFile: "solutions/13_async_await/async1.swift", atomically: true, encoding: .utf8)
+        
+        // actors1 solution
+        let actors1Solution = """
+        // Actors provide thread-safe data isolation in Swift 6!
+        
+        import Foundation
+        
+        actor Counter {
+            var value = 0
+            
+            func increment() {
+                value += 1
+            }
+        }
+        
+        Task {
+            let counter = Counter()
+            await counter.increment()
+            print("Counter: \\(await counter.value)")
+        }
+        
+        // Keep program running to see output
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        """
+        try actors1Solution.write(toFile: "solutions/14_actors/actors1.swift", atomically: true, encoding: .utf8)
+        
+        // macros1 solution (same as exercise for now)
+        let macros1Solution = """
+        // Swift 6 introduces powerful macros!
+        // This exercise just demonstrates the concept.
+        
+        let value = 42
+        print("The value is: \\(value)")
+        
+        // Macros are an advanced feature in Swift 6.2
+        // They allow compile-time code generation.
+        """
+        try macros1Solution.write(toFile: "solutions/15_macros/macros1.swift", atomically: true, encoding: .utf8)
     }
     
     private static func createReadmeFiles() throws {

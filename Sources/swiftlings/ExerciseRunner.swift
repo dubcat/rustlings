@@ -4,7 +4,7 @@ import Foundation
 class ExerciseRunner {
     
     /// Run an exercise (compile and optionally run tests)
-    func runExercise(_ exercise: ExerciseInfo) throws -> Bool {
+    func runExercise(_ exercise: ExerciseInfo, silent: Bool = false) throws -> Bool {
         let exercisePath = exercise.path()
         
         guard FileManager.default.fileExists(atPath: exercisePath) else {
@@ -12,30 +12,46 @@ class ExerciseRunner {
         }
         
         // Compile the exercise
-        print("\nCompiling \(exercisePath)...")
+        if !silent {
+            print("\nCompiling \(exercisePath)...")
+        }
         
         let compileResult = try compile(exercise)
         if !compileResult.success {
-            print(compileResult.output)
+            if !silent {
+                print(compileResult.output)
+            }
             return false
         }
         
-        print("Compilation successful!")
+        if !silent {
+            print("Compilation successful!")
+        }
         
         // Run tests if required
         if exercise.test {
-            print("\nRunning tests...")
+            if !silent {
+                print("\nRunning tests...")
+            }
             let testResult = try runTests(exercise)
             if !testResult.success {
-                print(testResult.output)
+                if !silent {
+                    print(testResult.output)
+                }
                 return false
             }
-            print("All tests passed!")
+            if !silent {
+                print("All tests passed!")
+            }
         } else {
             // Just run the exercise
-            print("\nRunning...")
+            if !silent {
+                print("\nRunning...")
+            }
             let runResult = try run(exercise)
-            print(runResult.output)
+            if !silent {
+                print(runResult.output)
+            }
             if !runResult.success {
                 return false
             }

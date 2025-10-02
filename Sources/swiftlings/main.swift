@@ -12,6 +12,7 @@ struct Swiftlings: ParsableCommand {
             RunCommand.self,
             WatchCommand.self,
             ListCommand.self,
+            CheckAllCommand.self,
             ResetCommand.self,
             HintCommand.self,
         ],
@@ -66,12 +67,24 @@ struct WatchCommand: ParsableCommand {
 struct ListCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "list",
-        abstract: "List all exercises"
+        abstract: "List all exercises with their status"
     )
     
     func run() throws {
         let appState = try AppState()
         appState.listExercises()
+    }
+}
+
+struct CheckAllCommand: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        commandName: "check-all",
+        abstract: "Check all exercises, marking them as done or pending accordingly"
+    )
+    
+    func run() throws {
+        let appState = try AppState()
+        try appState.checkAllExercises()
     }
 }
 
